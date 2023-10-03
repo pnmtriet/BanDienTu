@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
-    @Autowired(required = true)
+    @Autowired
     private ProductRepo productRepo;
 
     @Autowired

@@ -6,6 +6,7 @@ import com.poly.common.Utils;
 import com.poly.entity.Account;
 import com.poly.entity.CartDetail;
 import com.poly.entity.Product;
+import com.poly.model.ProductResult;
 import com.poly.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ public class ShopController {
 
     @Autowired
     CategoriesService categoriesDAO;
+
 
     @Autowired
     BrandService brandDAO;
@@ -73,13 +75,15 @@ public class ShopController {
         Page<Product> pageProduct = txtSearch.isPresent()
                 ? productDAO.findByName(pageable, txtSearch.get())
                 : productDAO.findProductExist(pageable);
-        List<Product> list = Utils.getProductResult(pageProduct.getContent());
+        List<Product> list = pageProduct.getContent();
+        List<ProductResult> listResult = Utils.getProductResult(list);
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
         }
-        model.addAttribute("listProduct", list);
+        model.addAttribute("listProduct", listResult);
         model.addAttribute("listCategory", categoriesDAO.findCategoriesExist());
         model.addAttribute("listBrand", brandDAO.findBrandExist());
+        model.addAttribute("namePage","Mua sắm");
         Account khachHang = (Account) session.get("user");
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
         if (khachHang != null) {

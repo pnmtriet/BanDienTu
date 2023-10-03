@@ -7,6 +7,7 @@ import com.poly.entity.CartDetail;
 import com.poly.entity.Product;
 import com.poly.entity.RolesDetail;
 import com.poly.model.ProductModel;
+import com.poly.model.ProductResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -710,16 +711,32 @@ public class Utils {
         return result;
     }
 
-    public static List<Product> getProductResult(List<Product> list){
+    public static List<ProductResult> getProductResult(List<Product> list){
+        List<ProductResult> listResult = new ArrayList<>();
         if(list != null){
             for(Product p : list){
-                int price = p.getPrice();
-                if(p.getDiscount() != 0){
-                    price = (int) (p.getPrice() * (1 - p.getDiscount()/(double)100));
-                }
-                p.setPrice(price);
+                ProductResult productResult = new ProductResult();
+                productResult.setId(p.getId());
+                productResult.setProductName(p.getProductName());
+                productResult.setPrice(p.getPrice());
+                productResult.setDiscount(p.getDiscount());
+                productResult.setDeleted(p.getDeleted());
+                productResult.setNote(p.getNote());
+                productResult.setImages(p.getImages());
+                productResult.setNumberOfSale(p.getNumberOfSale());
+                productResult.setBrandId(p.getBrandId());
+                productResult.setCategoryId(p.getCategoryId());
+                productResult.setCategoriesByCategoryId(p.getCategoriesByCategoryId());
+                productResult.setBrandByBrandId(p.getBrandByBrandId());
+                productResult.setCreatedAt(p.getCreatedAt());
+                productResult.setUpdatedAt(p.getUpdatedAt());
+                int price = (int) (p.getPrice() * (1 - p.getDiscount()/(double)100));
+                productResult.setPriceSale(price);
+                listResult.add(productResult);
             }
         }
-        return list;
+        return listResult;
     }
+
+
 }
